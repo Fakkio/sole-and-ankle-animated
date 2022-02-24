@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from "react";
+import styled from "styled-components/macro";
 
-import { QUERIES, WEIGHTS } from '../../constants';
-import Logo from '../Logo';
-import Icon from '../Icon';
-import UnstyledButton from '../UnstyledButton';
-import SuperHeader from '../SuperHeader';
-import MobileMenu from '../MobileMenu';
-import VisuallyHidden from '../VisuallyHidden';
+import {QUERIES, WEIGHTS} from "../../constants";
+import Logo from "../Logo";
+import Icon from "../Icon";
+import UnstyledButton from "../UnstyledButton";
+import SuperHeader from "../SuperHeader";
+import MobileMenu from "../MobileMenu";
+import VisuallyHidden from "../VisuallyHidden";
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
@@ -115,14 +115,53 @@ const Filler = styled.div`
 `;
 
 const NavLink = styled.a`
+  position: relative;
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-gray-900);
+  color: transparent;
+  --link-color: var(--color-gray-900);
   font-weight: ${WEIGHTS.medium};
+  overflow: hidden;
 
   &:first-of-type {
-    color: var(--color-secondary);
+    --link-color: var(--color-secondary);
+  }
+
+  &::before {
+    content: "${(p) => p.children}";
+    color: var(--link-color);
+    left: 0;
+    top: 0;
+    transform: translateY(0%);
+    position: absolute;
+    transition: transform 500ms;
+    will-change: transform;
+  }
+
+  &::after {
+    content: "${(p) => p.children}";
+    color: var(--link-color);
+    left: 0;
+    top: 0;
+    transform: translateY(100%);
+    position: absolute;
+    font-weight: 700;
+    transition: transform 500ms;
+    will-change: transform;
+  }
+
+  @media ${QUERIES.hasHover} and ${QUERIES.nonReducedAnimation} {
+    &:hover {
+      &::before {
+        transform: translateY(-100%);
+        transition: transform 250ms;
+      }
+      &::after {
+        transform: translateY(0%);
+        transition: transform 250ms;
+      }
+    }
   }
 `;
 
